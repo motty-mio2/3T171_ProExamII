@@ -15,5 +15,5 @@ int main() {
 
   double ans = pythagoras(a, b);
 
-  printf("%f", ans);
+  printf("%f\n", ans);
 }
