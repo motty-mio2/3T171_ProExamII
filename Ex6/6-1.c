@@ -2,16 +2,12 @@
 
 #define arrlong 200
 
-long long power(int x, int n) {  // x^n
-  long ans = 1;
-  if (n == 0 || x == 0) {
-    ans = 1;
-  } else {
-    for (int i = 0; i < n; i++) {
-      ans *= x;
-    }
-  }
-  return ans;
+void swap(int* a, int* b) {
+  // implement this function
+  int tp;
+  tp = *a;
+  *a = *b;
+  *b = tp;
 }
 
 void initarr(int* a, long n) {  // init new (arr)a as (int)n
@@ -42,39 +38,67 @@ void addarr(int* a, int* b, int* c) {  // add two arrs (arr)a+(arr)b=(arr)c
   for (int i = 0; i < arrlong; i++) {
     temp = (a[i] + b[i]);
     if ((i != arrlong - 1) && (temp > 9)) {
-      c[i + 1] += 1
+      c[i + 1] += 1;
     }
     c[i] += temp % 10;
   }
   // printf("%d\n", temp);
-  initarr(c, temp);
 }
 
 void multiarr(int* a, int* b, int* c) {  // multi two arrs (arr)a*(arr)b=(arr)c
   initarr(c, 0);
   int temp[arrlong];
-  long calc;
   for (int i = 0; i < arrlong; i++) {
-    for (int j = 0; j < arrlong; j++) {
-      calc = a[i] * b[j] * power(10, i) * power(10, j);
-      initarr(temp, calc);
-      addarr(c, &temp, c);
+    if (a[i] != 0) {
+      for (int j = 0; j < arrlong; j++) {
+        if (b[j] != 0) {
+          int calc = a[i] * b[j];
+          int zs = i + j;
+          int f = 0;
+          while (calc > 0) {
+            c[zs + f] += calc % 10;
+            if (c[zs + f] > 9) {
+              c[zs + f] -= 10;
+              calc += 10;
+            }
+            calc /= 10;
+            f++;
+          }
+        }
+      }
     }
   }
 }
 
 void minusarr(int* a, int* b, int* c) {  // minus two arrs (arr)a-(arr)b=(arr)c
+  initarr(c, 0);
   long temp = 0;
   for (int i = 0; i < arrlong; i++) {
-    temp += (a[i] - b[i]) * power(10, i);
+    temp = a[i] - b[i];
+    c[i] += temp;
+    if (c[i] < 0) {
+      c[i] += 10;
+      c[i + 1] -= 1;
+    }
   }
   // printf("%d\n", temp);
-  initarr(c, temp);
+}
+
+void factorial(int n, int* a) {  // calc n! = a
+  initarr(a, 1);
+  int temp[arrlong];
+  int temp2[arrlong];
+  for (int i = 2; i < n + 1; i++) {
+    initarr(&temp, i);
+    multiarr(a, &temp, &temp2);
+    initarr(&temp, 0);
+    addarr(&temp, &temp2, a);
+  }
 }
 
 int main() {
-  long n1 = 10;
-  long n2 = 15;
+  long n1 = 25;
+  long n2 = 40;
 
   int A[arrlong];
   int B[arrlong];
@@ -99,29 +123,22 @@ int main() {
   printarr(&D);
 
   minusarr(&A, &B, &E);
-  printf("A + B is \t");
+  printf("A - B is \t");
   printarr(&E);
 
   int ans1[arrlong];
-  initarr(&ans1, 1);
-  int fiftys[arrlong];
-  initarr(&fiftys, 0);
-  int temp[arrlong];
-  for (int i = 1; i < 10; i++) {
-    initarr(&temp, i);
-    multiarr(&ans1, &temp, &ans1);
-    if (i == 50) {
-      addarr(&fiftys, &temp, &fiftys);
-    }
-  }
-  printf("100! is \t");
+  int ns = 100;
+  factorial(ns, ans1);
+  printf("%d! is \t", ns);
   printarr(&ans1);
-  /*
-    printf("100! -50! is \t");
-    int ans2[arrlong];
-    minusarr(&ans1, &fiftys, &ans2);
-    printarr(&ans2);
-    */
+
+  int ans2[arrlong];
+  int fifties[arrlong];
+  int nf = 50;
+  factorial(nf, fifties);
+  minusarr(&ans1, &fifties, &ans2);
+  printf("%d! - %d! is \t", ns, nf);
+  printarr(&ans2);
 
   return 0;
 }
