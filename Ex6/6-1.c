@@ -2,14 +2,6 @@
 
 #define arrlong 200
 
-void swap(int* a, int* b) {
-  // implement this function
-  int tp;
-  tp = *a;
-  *a = *b;
-  *b = tp;
-}
-
 void initarr(int* a, long n) {  // init new (arr)a as (int)n
   for (int i = 0; i < arrlong; i++) {
     a[i] = n % 10;
