@@ -3,14 +3,14 @@
 
 #define arrlong 200
 
-void initarr(int* a, long n) {  // init new (arr)a as (int)n
+void initarr(int a[], long n) {  // init new (arr)a as (int)n
   for (int i = 0; i < arrlong; i++) {
     a[i] = n % 10;
     n /= 10;
   }
 }
 
-void printarr(int* a) {  // printout (arr)a
+void printarr(int a[]) {  // printout (arr)a
   int zeroc = 0;
   int tg;
   for (int i = arrlong - 1; i >= 0; i--) {
@@ -25,7 +25,7 @@ void printarr(int* a) {  // printout (arr)a
   printf("\n");
 }
 
-int addarr(int* a, int* b, int* c) {  // add two arrs (arr)a+(arr)b=(arr)c
+int addarr(int a[], int b[], int c[]) {  // add two arrs (arr)a+(arr)b=(arr)c
   initarr(c, 0);
   int temp;
   for (int i = 0; i < arrlong - 1; i++) {
@@ -47,7 +47,9 @@ int addarr(int* a, int* b, int* c) {  // add two arrs (arr)a+(arr)b=(arr)c
   return rt;
 }
 
-void multiarr(int* a, int* b, int* c) {  // multi two arrs (arr)a*(arr)b=(arr)c
+void multiarr(int a[],
+              int b[],
+              int c[]) {  // multi two arrs (arr)a*(arr)b=(arr)c
   initarr(c, 0);
   int temp[arrlong];
   for (int i = 0; i < arrlong; i++) {
@@ -72,18 +74,20 @@ void multiarr(int* a, int* b, int* c) {  // multi two arrs (arr)a*(arr)b=(arr)c
   }
 }
 
-void minusarr(int* a, int* b, int* c) {  // minus two arrs (arr)a-(arr)b=(arr)c
+void minusarr(int a[],
+              int b[],
+              int c[]) {  // minus two arrs (arr)a-(arr)b=(arr)c
   initarr(c, 0);
   long temp = 0;
   int rev[arrlong];
-  initarr(&rev, 0);
+  initarr(rev, 0);
   for (int i = 0; i < arrlong; i++) {
     rev[i] = 9 - b[i] + (i == 0);
   }
-  // printarr(&rev);
+  // printarr(rev);
   int afadd[arrlong];
-  int fg = addarr(a, &rev, &afadd);
-  // printarr(&afadd);
+  int fg = addarr(a, rev, afadd);
+  // printarr(afadd);
 
   if (fg == 0) {
     int zflag = 0;
@@ -95,8 +99,8 @@ void minusarr(int* a, int* b, int* c) {  // minus two arrs (arr)a-(arr)b=(arr)c
       }
     }
   }
-  initarr(&rev, 0);
-  addarr(&afadd, &rev, c);
+  initarr(rev, 0);
+  addarr(afadd, rev, c);
 
   /*
     for (int i = 0; i < arrlong; i++) {
@@ -111,15 +115,15 @@ void minusarr(int* a, int* b, int* c) {  // minus two arrs (arr)a-(arr)b=(arr)c
   // printf("%d\n", temp);
 }
 
-void factorial(int n, int* a) {  // calc n! = a
+void factorial(int n, int a[]) {  // calc n! = a
   initarr(a, 1);
   int temp[arrlong];
   int temp2[arrlong];
   for (int i = 2; i < n + 1; i++) {
-    initarr(&temp, i);
-    multiarr(a, &temp, &temp2);
-    initarr(&temp, 0);
-    addarr(&temp, &temp2, a);
+    initarr(temp, i);
+    multiarr(a, temp, temp2);
+    initarr(temp, 0);
+    addarr(temp, temp2, a);
   }
 }
 
@@ -133,43 +137,43 @@ int main() {
   int D[arrlong];
   int E[arrlong];
 
-  initarr(&A, n1);
+  initarr(A, n1);
   printf("array A is \t");
-  printarr(&A);
+  printarr(A);
 
-  initarr(&B, n2);
+  initarr(B, n2);
   printf("array B is \t");
-  printarr(&B);
+  printarr(B);
 
-  addarr(&A, &B, &C);
+  addarr(A, B, C);
   printf("A + B is \t");
-  printarr(&C);
+  printarr(C);
 
-  multiarr(&A, &B, &D);
+  multiarr(A, B, D);
   printf("A * B is \t");
-  printarr(&D);
+  printarr(D);
 
-  minusarr(&A, &B, &E);
+  minusarr(A, B, E);
   printf("A - B is \t");
-  printarr(&E);
+  printarr(E);
 
-  minusarr(&B, &A, &E);
+  minusarr(B, A, E);
   printf("B - A is \t");
-  printarr(&E);
+  printarr(E);
 
   int ans1[arrlong];
   int ns = 100;
   factorial(ns, ans1);
   printf("%d! is \t", ns);
-  printarr(&ans1);
+  printarr(ans1);
 
   int ans2[arrlong];
   int fifties[arrlong];
   int nf = 50;
   factorial(nf, fifties);
-  minusarr(&ans1, &fifties, &ans2);
+  minusarr(ans1, fifties, ans2);
   printf("%d! - %d! is \t", ns, nf);
-  printarr(&ans2);
+  printarr(ans2);
 
   return 0;
 }
