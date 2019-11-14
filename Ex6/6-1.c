@@ -65,7 +65,9 @@ void multiarr(int* a, int* b, int* c) {  // multi two arrs (arr)a*(arr)b=(arr)c
 void minusarr(int* a, int* b, int* c) {  // minus two arrs (arr)a-(arr)b=(arr)c
   initarr(c, 0);
   long temp = 0;
-  for (int i = 0; i < arrlong; i++) {
+  int tmp[arrlong];
+  initarr(&tmp);
+  tmp = for (int i = 0; i < arrlong; i++) {
     temp = a[i] - b[i];
     c[i] += temp;
     if (c[i] < 0) {
