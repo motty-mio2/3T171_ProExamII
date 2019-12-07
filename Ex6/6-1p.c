@@ -7,6 +7,9 @@ void initarr(int a[], long n) {  // init new (arr)a as (int)n
   for (int i = 0; i < arrlong; i++) {
     a[i] = n % 10;
     n /= 10;
+    if (n == 0) {
+      break;
+    }
   }
 }
 
