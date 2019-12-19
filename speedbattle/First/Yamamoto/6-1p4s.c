@@ -1,5 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/resource.h>
+#include <sys/time.h>
+#include <time.h>
+#include <unistd.h>
+
+/* 補助関数: 実行時間を測定するための関数 */
+double getcputime(void) {
+  struct rusage use;
+  getrusage(RUSAGE_SELF, &use);
+  return (double)use.ru_utime.tv_sec + (double)use.ru_utime.tv_usec * 0.000001;
+}
 
 #define arrlong 200
 
@@ -74,9 +85,8 @@ void multiarr(int a[],
   }
 }
 
-void minusarr(int a[],
-              int b[],
-              int c[]) {  // minus two arrs (arr)a-(arr)b=(arr)c
+void minusarr(int a[], int b[], int c[]) {
+  // minus two arrs (arr)a-(arr)b=(arr)c
   initarr(c, 0);
   long temp = 0;
   int rev[arrlong];
@@ -84,6 +94,7 @@ void minusarr(int a[],
   for (int i = 0; i < arrlong; i++) {
     rev[i] = 9 - b[i] + (i == 0);
   }
+  // printf("reversed arr is ");
   // printarr(rev);
   int afadd[arrlong];
   int fg = addarr(a, rev, afadd);
@@ -128,6 +139,8 @@ void factorial(int n, int a[]) {  // calc n! = a
 }
 
 int main() {
+  double start, end;
+
   long n1 = rand();
   long n2 = rand();
 
@@ -136,6 +149,8 @@ int main() {
   int C[arrlong];
   int D[arrlong];
   int E[arrlong];
+
+  start = getcputime();
 
   initarr(A, n1);
   printf("array A is \t");
@@ -174,6 +189,10 @@ int main() {
   minusarr(ans1, fifties, ans2);
   printf("%d! - %d! is \t", ns, nf);
   printarr(ans2);
+
+  end = getcputime();
+
+  printf("time: %f [s]\n", end - start);
 
   return 0;
 }

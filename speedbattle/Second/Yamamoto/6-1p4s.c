@@ -1,5 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/resource.h>
+#include <sys/time.h>
+#include <time.h>
+#include <unistd.h>
+
+/* 補助関数: 実行時間を測定するための関数 */
+double getcputime(void) {
+  struct rusage use;
+  getrusage(RUSAGE_SELF, &use);
+  return (double)use.ru_utime.tv_sec + (double)use.ru_utime.tv_usec * 0.000001;
+}
 
 #define arrlong 200
 
@@ -7,9 +18,6 @@ void initarr(int a[], long n) {  // init new (arr)a as (int)n
   for (int i = 0; i < arrlong; i++) {
     a[i] = n % 10;
     n /= 10;
-    if (n == 0) {
-      break;
-    }
   }
 }
 
@@ -77,45 +85,29 @@ void multiarr(int a[],
   }
 }
 
-void minusarr(int a[],
-              int b[],
-              int c[]) {  // minus two arrs (arr)a-(arr)b=(arr)c
+void minusarr(int a[], int b[], int c[]) {
+  // minus two arrs (arr)a-(arr)b=(arr)c
   initarr(c, 0);
-  long temp = 0;
   int rev[arrlong];
   initarr(rev, 0);
   for (int i = 0; i < arrlong; i++) {
     rev[i] = 9 - b[i] + (i == 0);
   }
-  // printarr(rev);
-  int afadd[arrlong];
-  int fg = addarr(a, rev, afadd);
+  // printf("reversed arr is ");
+  printarr(rev);
+  int fg = addarr(a, rev, c);
   // printarr(afadd);
 
   if (fg == 0) {
     int zflag = 0;
     for (int i = arrlong - 1; i >= 0; i--) {
-      afadd[i] = 9 - afadd[i] + (i == 0);
-      if (zflag == 0 && afadd[i] != 0) {
-        afadd[i] *= -1;
+      c[i] = 9 - c[i] + (i == 0);
+      if (zflag == 0 && c[i] != 0) {
+        c[i] *= -1;
         zflag = 1;
       }
     }
   }
-  initarr(rev, 0);
-  addarr(afadd, rev, c);
-
-  /*
-    for (int i = 0; i < arrlong; i++) {
-      temp = a[i] - b[i];
-      c[i] += temp;
-      if (c[i] < 0) {
-        c[i] += 10;
-        c[i + 1] -= 1;
-      }
-    }
-    */
-  // printf("%d\n", temp);
 }
 
 void factorial(int n, int a[]) {  // calc n! = a
@@ -131,6 +123,8 @@ void factorial(int n, int a[]) {  // calc n! = a
 }
 
 int main() {
+  double start, end;
+
   long n1 = rand();
   long n2 = rand();
 
@@ -139,6 +133,8 @@ int main() {
   int C[arrlong];
   int D[arrlong];
   int E[arrlong];
+
+  start = getcputime();
 
   initarr(A, n1);
   printf("array A is \t");
@@ -177,6 +173,10 @@ int main() {
   minusarr(ans1, fifties, ans2);
   printf("%d! - %d! is \t", ns, nf);
   printarr(ans2);
+
+  end = getcputime();
+
+  printf("time: %f [s]\n", end - start);
 
   return 0;
 }
