@@ -1,27 +1,17 @@
 #include <stdio.h>
-
-#define NUMS 10
-
-void printlist(int a[], int ls) {
-  for (int i = 0; i < ls; i++) {
-    printf("%d ", a[i]);
-  }
-  printf("\n");
-}
+#define NUMS 100
 
 int main() {
-  int part[NUMS];
-  int last, i;
-  char tp;
-  for (i = 0; i < NUMS; i++) {
-    scanf("%c", &tp);
-    if (tp == "\n") {
-      last = i - 1;
-      break;
-    } else {
-      last = i;
-      part[i] = tp - '0';
-    }
-  }
-  printlist(part, last);
+  /*
+  char a = 'A';
+  char b = 'B';
+  char ax = a + 1;
+  printf("%d %d\n", a, b);
+  printf("%d %s\n", ax, ax);
+*/
+  char c[NUMS] = {0};
+
+  printf("%d\n", c[0]);
+
+  return 0;
 }

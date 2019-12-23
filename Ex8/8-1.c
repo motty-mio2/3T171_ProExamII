@@ -2,61 +2,76 @@
 
 #define NUMS 100
 
-void printwordarr(char* text[]) {
-  for (int i = 0; i < NUMS; i++) {
-    printf("%s", text[i]);
-  }
-  printf("\n");
-}
-
-void printarr(int a[]) {  // printout (arr)a
-  for (int i = 0; i < NUMS; i++) {
-    printf("%d", a[i]);
-  }
-  printf("\n");
-}
-
-void word2num(char* text, int* convnum) {
-  for (int i = 0; i < NUMS; i++) {
-    convnum[i] = text[i] - 0;
-  }
-}
-
-void num2word(int* convnum, char* text) {
-  for (int i = 0; i < NUMS; i++) {
-    convnum[i] = text[i];
-  }
-}
-void encrypt(char* plain, char* clipher, int rshift) {
-  int temp[NUMS];
-  word2num(&plain, &temp);
-  for (int i = 0; i < NUMS; i++) {
-    int tp = temp[i];
-    if (64 < tp, tp < 91) {
-      clipher = ((tp - 65) + rshift) % 26 + 65;
+void encrypt(char plain[NUMS], char clipher[NUMS], int rshift) {
+  int i = 0;
+  char tp;
+  while (1) {
+    tp = plain[i];
+    // printf("%d\n", plain[i]);
+    if ((tp - 0) == 0) {
+      clipher[i] = '\n';
+      break;
+    } else if ('A' <= tp && tp <= 'Z') {
+      clipher[i] = ((tp - 'A') + rshift + 26) % 26 + 'A';
+    } else if ('a' <= tp && tp <= 'z') {
+      clipher[i] = ((tp - 'a') + rshift + 26) % 26 + 'a';
+    } else {
+      clipher[i] = tp;
     }
+    printf("%c", clipher[i]);
+    i++;
   }
-  num2word(&temp, &clipher);
+  printf("\n");
 }
+/*
+void decrypt(char plain[NUMS], char clipher[NUMS], int rshift) {
+  int i = 0;
+  char tp;
+  while (1) {
+    tp = plain[i];
+    // printf("%d\n", plain[i]);
+    if ((tp - 0) == 0) {
+      clipher[i] = '\n';
+      break;
+    } else if ('A' <= tp && tp <= 'Z') {
+      clipher[i] = ((tp - 'A') - rshift + 26) % 26 + 'A';
+    } else if ('a' <= tp && tp <= 'z') {
+      clipher[i] = ((tp - 'a') - rshift + 26) % 26 + 'a';
+    } else {
+      clipher[i] = tp;
+    }
+    printf("%c", clipher[i]);
+    i++;
+  }
+  printf("\n");
+}
+*/
 
-void decrypt() {}
+void decrypt2(char plain[NUMS], char clipher[NUMS], int rshift) {
+  encrypt(plain, clipher, -1 * rshift);
+}
 
 int main() {
-  char intext[NUMS];
-  char outtext[NUMS];
-  int rshift;
-  printf("input text -> ");
-  fgets(intext, NUMS, stdin);
-  printf("input encyrpt keys -> ");
+  char tp;
+  char c[NUMS] = {0};
+  char out1[NUMS], out2[NUMS];
+  int rshift = 1;
+  int last = 0;
+
+  printf("input key -> ");
   scanf("%d", &rshift);
+  scanf("%c", &tp);
+  printf("input text -> ");
 
-  printf("%s", intext);
+  while ((tp = getchar()) != '\n') {
+    c[last] = tp;
 
-  /*  encrypt(intext, outtext, rshift);
-
-    printwordarr(intext);
-
-    printwordarr(outtext);
-  */
+    printf("%c", c[last]);
+    last++;
+  }
+  printf("\n");
+  encrypt(c, out1, rshift);
+  decrypt2(out1, out2, rshift);
+  // printf("%s\n", out1);
   return 0;
 }
