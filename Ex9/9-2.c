@@ -57,7 +57,7 @@ int main(void) {
   }
   fclose(fp); /* クローズ */
 
-  fp2 = fopen("hw2.dat", "w");
+  fp2 = fopen("/home2/1894372t/hw2.dat", "w");
   for (int i = 0; i < ninzu; i++) {
     fprintf(fp2, "%s %.1f %.1f\n", name[i], height[i], weight[i]);
     printf("%s\t%.1f\t%.1f\n", name[i], height[i], weight[i]);
