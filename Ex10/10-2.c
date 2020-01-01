@@ -2,7 +2,7 @@
 
 int main() {
   int a, b, c, d, e, f;
-  long x, y;
+  double x, y;
 
   printf("input 6 numbers\n");
   printf("  a -> ");
@@ -19,16 +19,18 @@ int main() {
   scanf("%d", &f);
 
   int tp = a * e - b * d;
-  if (tp == 0) {
-    printf("There is no solution\n");
-  } else if ((d / a == e / b) && (e / b == f / c)) {
-    printf("The solution forms a straight line.");
+  if (tp == 0) {           // 傾き一致
+    if (c / b == f / e) {  //切片一致
+      printf("The solution forms a straight line.");
+    } else {
+      printf("There is no solution\n");
+    }
   } else {  //解あり
     x = (a * f - d * c) / tp;
     y = (c * e - b * f) / tp;
     printf("answer is \n");
-    printf("  x is %ld\n", x);
-    printf("  y is %ld\n", y);
+    printf("  x is %f\n", x);
+    printf("  y is %f\n", y);
   }
 
   return 0;
