@@ -48,26 +48,34 @@ void multi(int a[NUMS], char f[NUMS], int ms) {
   lshif_char(f, ms);
 }
 
-void maincalu(int numbers[NUMS],
-              char funcs[NUMS],
-              int startpoint,
-              int endpoint) {
+int maincalu(int numbers[NUMS],
+             char funcs[NUMS],
+             int startpoint,
+             int endpoint) {
   int endpointl = endpoint;
   int i = startpoint;
   while (i < endpointl) {  //掛け算
     // putchar(funcs[i]);
     // putchar('\n');
-    if (funcs[i] == '*') {
+    if (funcs[i] == '(') {
+      lshif_char(funcs, i);
+      for (int j = endpoint; j > 0; j--) {
+        if (funcs[j] == ')') {
+          lshif_char(funcs, j);
+          maincalu(numbers, funcs, startpoint, j - 1);
+        }
+      }
+    } else if (funcs[i] == '*') {
       multi(numbers, funcs, i);
       endpoint--;
     } else {
       i++;
     }
   }
-  /*
+
   printarr(numbers, endpoint);
   printcarr(funcs, endpoint);
-  */
+
   for (int i = startpoint; i < endpoint; i++) {  //足し引き算
     if (funcs[i] == '+') {
       adder(numbers, funcs, i);
@@ -78,33 +86,39 @@ void maincalu(int numbers[NUMS],
       i--;
     }
   }
+  return numbers[0];
 }
 
 int main() {
   int ns[NUMS] = {0};
   char fs[NUMS] = {' '};
   char tp;
-  int endpoint = 0;
+  int ep_n = 0, ep_f = 0;
   int tn = 0;
   for (int i = 0; i < NUMS; i++) {
     tp = getchar();
     if (tp != '+' && tp != '-' && tp != '*' && tp != '(' && tp != ')' &&
         tp != '\n' && tp != ' ') {
       tn = tn * 10 + (tp - '0');
-    } else if (tp == '+' || tp != '-' || tp != '*' || tp != '(' || tp != ')') {
-      fs[endpoint] = tp;
-      ns[endpoint] = tn;
+    } else if (tp == '+' || tp != '-' || tp != '*') {
+      fs[ep_f] = tp;
+      ns[ep_n] = tn;
       tn = 0;
       // printf("%d %c ", ns[endpoint], fs[endpoint]);
-      endpoint++;
+      ep_f++;
+      ep_i++;
+    } else if (tp != '(' || tp != ')') {
+      fs[ep_f] = tp;
+      ep_f++;
     }
     if (tp == '\n') {
       break;
     }
   }
 
-  // printf("\n");
-  // printcarr(fs, endpoint);
+  printf("\n");
+  printarr(ns, endpoint);
+  printcarr(fs, endpoint);
   maincalu(ns, fs, 0, endpoint);
   printf("%d", ns[0]);
 
